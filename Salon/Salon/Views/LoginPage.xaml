@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Salon.LoginPage">
+    <ContentPage.Content>
+        <StackLayout Padding="40" VerticalOptions="Center" 
+                HorizontalOptions="FillAndExpand" >
+
+            <Image Source="lexapro.png" 
+                   WidthRequest="180"></Image>
+
+            <Label x:Name="ErrorLbl" TextColor="Red" FontAttributes="Bold"></Label>
+
+            <Entry x:Name="txtUsername" Placeholder="Username"/>
+
+            <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password"/>
+
+            <Button Text="Login" CornerRadius="60"
+                    FontSize="20"
+                    HorizontalOptions="CenterAndExpand"
+                    BackgroundColor="Transparent"
+                    BorderColor="DarkGray"
+                    BorderWidth="1.2"
+                    WidthRequest="150"
+                    Clicked="OnButtonClicked"/>
+
+            <Label HorizontalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Register" FontAttributes="Bold"/>
+                    </FormattedString>
+                </Label.FormattedText>
+
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
