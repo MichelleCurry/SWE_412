@@ -19,7 +19,7 @@ namespace Salon
             InitializeComponent();
         }
 
-        private void OnButtonClicked(object sender, EventArgs e)
+        private void OnLoginClicked(object sender, EventArgs e)
         {
             /*var fireBaseClient = new Firebase.Database.FirebaseClient("https://salon-ff877-default-rtdb.firebaseio.com/");
             

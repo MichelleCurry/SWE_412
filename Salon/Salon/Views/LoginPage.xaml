@@ -22,7 +22,7 @@
                     BorderColor="DarkGray"
                     BorderWidth="1.2"
                     WidthRequest="150"
-                    Clicked="OnButtonClicked"/>
+                    Clicked="OnLoginClicked"/>
 
             <Label HorizontalOptions="Center">
                 <Label.FormattedText>

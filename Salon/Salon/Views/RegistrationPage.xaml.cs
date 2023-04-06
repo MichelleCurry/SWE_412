@@ -16,5 +16,20 @@ namespace Salon
 		{
 			InitializeComponent ();
 		}
-	}
+
+        private void OnRegisterClicked(object sender, EventArgs e)
+        {
+
+            /*if (txtUsername.Text == "admin" && txtPassword.Text == "12345")
+            {
+                Navigation.PushAsync(new NearbyUsersPage());
+            }
+            else
+            {
+                ErrorLbl.Text = "Your username or password is incorrect";
+            }*/
+
+            RegErrorLbl.Text = "Register clicked";
+        }
+    }
 }
