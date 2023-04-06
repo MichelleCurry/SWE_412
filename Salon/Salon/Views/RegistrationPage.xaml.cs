@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Salon.Model;
+using Salon.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,24 +14,42 @@ namespace Salon
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RegistrationPage : ContentPage
 	{
-		public RegistrationPage ()
+        UserRepository repository = new UserRepository();
+
+        public string WebAPIkey = "AIzaSyBG9G6i1YH_LF0rTfvIYUUfSnJ6fhQlbTs";
+
+        public RegistrationPage ()
 		{
 			InitializeComponent ();
 		}
 
-        private void OnRegisterClicked(object sender, EventArgs e)
+        // Adds newly registered users to the database
+        public async void OnRegisterClicked(object sender, EventArgs e)
         {
-
-            /*if (txtUsername.Text == "admin" && txtPassword.Text == "12345")
+            if (string.IsNullOrEmpty(txtUsername.Text) 
+                || string.IsNullOrEmpty(txtPassword.Text) 
+                || string.IsNullOrEmpty(txtEmail.Text))
             {
-                Navigation.PushAsync(new NearbyUsersPage());
+                RegErrorLbl.Text = "all fields must be filled";
+            } else
+            {
+                User user = new User();
+                user.Username = txtUsername.Text;
+                user.Password = txtPassword.Text;
+                user.Email = txtEmail.Text;
+
+                var isSaved = await repository.Save(user);
+                if (isSaved)
+                {
+                    RegErrorLbl.Text = ":))))) User has been saved";
+                    await Navigation.PushAsync(new NearbyUsersPage());
+                }
+                else
+                {
+                    RegErrorLbl.Text = "****** User could not be saved";
+                }
             }
-            else
-            {
-                ErrorLbl.Text = "Your username or password is incorrect";
-            }*/
 
-            RegErrorLbl.Text = "Register clicked";
         }
     }
 }
