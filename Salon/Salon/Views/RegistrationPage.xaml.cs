@@ -14,7 +14,7 @@ namespace Salon
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RegistrationPage : ContentPage
 	{
-        UserRepository repository = new UserRepository();
+        readonly UserRepository repository = new UserRepository();
 
         public string WebAPIkey = "AIzaSyBG9G6i1YH_LF0rTfvIYUUfSnJ6fhQlbTs";
 
@@ -33,10 +33,12 @@ namespace Salon
                 RegErrorLbl.Text = "all fields must be filled";
             } else
             {
-                User user = new User();
-                user.Username = txtUsername.Text;
-                user.Password = txtPassword.Text;
-                user.Email = txtEmail.Text;
+                User user = new User
+                {
+                    Username = txtUsername.Text,
+                    Password = txtPassword.Text,
+                    Email = txtEmail.Text
+                };
 
                 var isSaved = await repository.Save(user);
                 if (isSaved)

@@ -11,7 +11,7 @@ namespace Salon.Services
     internal class UserRepository
     {
         // new data
-        FirebaseClient firebaseClient = new FirebaseClient("https://salon-ff877-default-rtdb.firebaseio.com/");
+        readonly FirebaseClient firebaseClient = new FirebaseClient("https://salon-ff877-default-rtdb.firebaseio.com/");
         
         //honestly not sure
         //best guess is it returns T/F waits for call on RegPage then adds user object to data base

@@ -14,6 +14,8 @@ namespace Salon
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+
+        //private Boolean loggedIn;
         public LoginPage()
         {
             InitializeComponent();
@@ -29,6 +31,8 @@ namespace Salon
             {
                 ErrorLbl.Text = "Your username or password is incorrect";
             }
+
+            //loggedIn = true;
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
