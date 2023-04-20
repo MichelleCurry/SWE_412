@@ -14,6 +14,7 @@ namespace Salon
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NearbyUsersPage : ContentPage
     {
+        CancellationTokenSource cts;
         public NearbyUsersPage()
         {
             InitializeComponent();
@@ -32,22 +33,27 @@ namespace Salon
         {
             try
             {
-                    // Get location
-                    var location = await Geolocation.GetLastKnownLocationAsync();
-                var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(3));
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
+                cts = new CancellationTokenSource();
+                var location = await Geolocation.GetLocationAsync(request, cts.Token);
 
                 if (location != null)
                 {
-                    // Update label with location
-                    Device.BeginInvokeOnMainThread(async () =>
-                    {
-                        location = await Geolocation.GetLocationAsync(request);
-                        LocationLbl.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}";
-                        Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
-                    });
-
-                    await Task.Delay(1000);
+                    LocationLbl.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}"; 
+                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}\n");
                 }
+
+                if (location == null)
+                {
+                    LocationLbl.Text = "No GPS";
+                }
+                else 
+                {
+                    LocationLbl.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}";
+                    //Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
+                }
+                await Task.Delay(5000);
+
             }
             catch (FeatureNotSupportedException fnsEx)
             {

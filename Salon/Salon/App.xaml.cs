@@ -12,7 +12,7 @@ namespace Salon
 
             //MainPage = new MainPage();
 
-            MainPage = new NavigationPage(new LoginPage());
+            MainPage = new NavigationPage(new NearbyUsersPage());
         }
 
         protected override void OnStart()
