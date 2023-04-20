@@ -18,10 +18,5 @@ namespace Salon.Model
         //probably shouldn't have the password stored locally
 
         public string Email { get; set; }
-
-        User(int id, string name, string email)
-        {
-
-        }
     }
 }
