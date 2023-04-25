@@ -17,37 +17,55 @@ namespace Salon
     {
         int failedLogin = 0;
         bool lockout = false;
+        bool loggedIn = false;
 
-        public void onTimedEvent(object sender, EventArgs e)
+        public void onLockoutEvent(object sender, EventArgs e)
         {
             lockout = false;
             failedLogin = 0;
             ErrorLbl.Text = string.Empty;
-            
         }
 
-        public void setLoginTimer()
+        public void setLockoutTimer()
         {
             System.Timers.Timer lockoutTimer = new System.Timers.Timer(86400000);
-            lockoutTimer.Elapsed += onTimedEvent;
+            lockoutTimer.Elapsed += onLockoutEvent;
             lockoutTimer.AutoReset = false;
             lockoutTimer.Start();
+        }
+
+        public void onUserTimeoutEvent(object sender, EventArgs e)
+        {
+            loggedIn = false;
+        }
+
+        public void setLoggedInTimer()
+        {
+            System.Timers.Timer loggedInTimer = new System.Timers.Timer(86400000);
+            loggedInTimer.Elapsed += onUserTimeoutEvent;
+            loggedInTimer.AutoReset = false;
+            loggedInTimer.Start();
         }
 
         public LoginPage()
         {
             InitializeComponent();
+            if (loggedIn)
+            {
+                //setLoggedInTimer();
+                Navigation.PushAsync(new NearbyUsersPage());
+            }
         }
 
         private void OnLoginClicked(object sender, EventArgs e)
         {
             //if the user has logged in 5 or more times unsuccessfully,
             //a 24 hour timer is set and logins are automatically denied
-            if(failedLogin >= 5 || lockout == true)
+            if(failedLogin >= 5 || lockout)
             {
                 lockout = true;
                 ErrorLbl.Text = "Too many login attempts. Try again in 24 hours";
-                setLoginTimer();
+                setLockoutTimer();
                 failedLogin++;
                 return;
             }
@@ -55,6 +73,8 @@ namespace Salon
             //normal login authentication
             if (txtUsername.Text == "admin" && txtPassword.Text == "12345")
             {
+                failedLogin = 0;
+                loggedIn = true;
                 Navigation.PushAsync(new NearbyUsersPage());
             }
             else 
