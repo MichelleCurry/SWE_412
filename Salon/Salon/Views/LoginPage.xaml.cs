@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Salon.Model;
+using Salon.Services;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -14,25 +16,32 @@ namespace Salon
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-
-        //private Boolean loggedIn;
+        readonly UserRepository repository = new UserRepository();
         public LoginPage()
         {
             InitializeComponent();
         }
 
-        private void OnLoginClicked(object sender, EventArgs e)
+        //handles correct and incorrect logins
+        private async void OnLoginClicked(object sender, EventArgs e)
         {
-            if (txtUsername.Text == "admin" && txtPassword.Text == "12345")
+            User existingUser = await repository.Login(usernameLbl.Text, passwordLbl.Text);
+
+            if (existingUser != null)
             {
-                Navigation.PushAsync(new NearbyUsersPage());
-            }
-            else 
-            {
-                ErrorLbl.Text = "Your username or password is incorrect";
+                await Navigation.PushAsync(new NearbyUsersPage());
             }
 
-            //loggedIn = true;
+            // non-firebase login for testing purposes
+            else if (usernameLbl.Text == "admin" && passwordLbl.Text == "12345")
+            {
+                await Navigation.PushAsync(new NearbyUsersPage());
+            }
+            else
+            {
+                ErrorLbl.Text = (existingUser != null) + " Your username or password is incorrect";
+                ErrorLbl.IsVisible = true;
+            }
         }
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)

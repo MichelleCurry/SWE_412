@@ -10,9 +10,9 @@ namespace Salon
         {
             InitializeComponent();
 
-            //MainPage = new MainPage();
+            //change page in the brackets to change first loaded page
 
-            MainPage = new NavigationPage(new NearbyUsersPage());
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()

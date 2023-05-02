@@ -4,12 +4,14 @@ using System.Text;
 
 namespace Salon.Model
 {
-    internal class User
+    public class User
     {
+        // user model
+        //set and get user information
+        public string Email { get; set; }
+
         public string Username { get; set; }
 
         public string Password { get; set; }
-
-        public string Email { get; set; }
     }
 }

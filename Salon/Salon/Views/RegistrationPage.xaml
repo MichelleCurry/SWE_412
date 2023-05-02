@@ -6,16 +6,16 @@
         <StackLayout Padding ="40"   VerticalOptions="Center"
                      HorizontalOptions="FillAndExpand">
 
-            <Label x:Name="RegErrorLbl" TextColor="Red" FontAttributes="Bold"></Label>
+            <Label x:Name="regErrorLbl" TextColor="Red" FontAttributes="Bold"></Label>
 
             <Label Text="Username" x:Name="RegUsername" FontAttributes="Bold"></Label>
-            <Entry x:Name="txtUsername" Placeholder="Username"/>
+            <Entry x:Name="rUsernameLbl" Placeholder="Username"/>
 
             <Label Text="Password" x:Name="RegPassword"  FontAttributes="Bold"></Label>
-            <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password"/>
+            <Entry x:Name="rPasswordLbl" IsPassword="True" Placeholder="Password"/>
 
             <Label Text="Email" x:Name="RegEmail"  FontAttributes="Bold"></Label>
-            <Entry x:Name="txtEmail" IsPassword="True" Placeholder="Email"/>
+            <Entry x:Name="rEmailLbl" IsPassword="True" Placeholder="Email"/>
 
             <Button Text="Register" CornerRadius="60"
                     FontSize="20"

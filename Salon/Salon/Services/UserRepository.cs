@@ -1,28 +1,98 @@
 ﻿using Firebase.Database;
-using Newtonsoft.Json;
-using Salon.Model;
+using Firebase.Database.Query;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace Salon.Services
 {
-    internal class UserRepository
+    public class UserRepository
+
     {
-        // new data
-        readonly FirebaseClient firebaseClient = new FirebaseClient("https://salon-ff877-default-rtdb.firebaseio.com/");
-        
-        //honestly not sure
-        //best guess is it returns T/F waits for call on RegPage then adds user object to data base
-        public async Task<bool> Save(User user)
+        // initialize the entry point for the firebase database
+        private readonly FirebaseClient firebase = new FirebaseClient("https://salon-ff877-default-rtdb.firebaseio.com/",
+            new FirebaseOptions
+            {
+                AuthTokenAsyncFactory = () => Task.FromResult("N5McCfKNM9bATDjl3NNOYuMboIexN6SlnqPGDuXA")
+            });
+
+        // Register a new user
+        public async Task<bool> RegisterUser(Model.User user)
         {
-        var data = await firebaseClient.Child(nameof(User)).PostAsync(JsonConvert.SerializeObject(user));
-        if (!string.IsNullOrEmpty(data.Key))
-        {
-            return true;
+            try
+            {
+                var users = firebase.Child("users");
+
+                // Check if email already exists
+                var existingUser = await users
+                    .OrderBy("Email")
+                    .EqualTo(user.Email)
+                    .OnceAsync<Model.User>();
+
+                if (existingUser.Count > 0)
+                {
+                    return false;
+                }
+
+                users = firebase.Child("users");
+
+                // Check if username already exists
+                var existingUsername = await users
+                    .OrderBy("Username")
+                    .EqualTo(user.Username)
+                    .OnceAsync<Model.User>();
+
+                if (existingUsername.Count > 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    await users.PostAsync(user);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error registering user: {ex.Message}");
+                return false;
+            }
         }
-            return false;
+
+
+        public async Task<Model.User> Login(string lUsername, string lPassword)
+        {
+            try
+            {
+                // Retrieve the user with the specified username
+                var user = (await firebase
+                    .Child("users")
+                    .OrderBy("Username")
+                    .EqualTo(lUsername)
+                    .OnceAsync<Model.User>())
+                    .FirstOrDefault()
+                    .Object;
+
+                if (user == null)
+                {
+                    return null;
+                }
+
+                // Verify the password
+                if (user.Password != lPassword)
+                {
+                    return null;
+                }
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error logging in: {ex.Message}");
+                return null;
+            }
         }
 
     }

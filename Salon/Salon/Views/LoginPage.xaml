@@ -14,9 +14,9 @@
 
             <Label x:Name="ErrorLbl" TextColor="Red" FontAttributes="Bold"></Label>
 
-            <Entry x:Name="txtUsername" Placeholder="Username"/>
+            <Entry x:Name="usernameLbl" Placeholder="Username"/>
 
-            <Entry x:Name="txtPassword" IsPassword="True" Placeholder="Password"/>
+            <Entry x:Name="passwordLbl" IsPassword="True" Placeholder="Password"/>
 
             <Button Text="Login" CornerRadius="60"
                     FontSize="20"
