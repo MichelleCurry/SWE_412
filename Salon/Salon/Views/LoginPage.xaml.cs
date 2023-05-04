@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Salon.Model;
+using Salon.Services;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -47,6 +49,7 @@ namespace Salon
             loggedInTimer.Start();
         }
 
+        readonly UserRepository repository = new UserRepository();
         public LoginPage()
         {
             InitializeComponent();
@@ -57,7 +60,8 @@ namespace Salon
             }
         }
 
-        private void OnLoginClicked(object sender, EventArgs e)
+        //handles correct and incorrect logins
+        private async void OnLoginClicked(object sender, EventArgs e)
         {
             //if the user has logged in 5 or more times unsuccessfully,
             //a 24 hour timer is set and logins are automatically denied
@@ -70,17 +74,29 @@ namespace Salon
                 return;
             }
             
-            //normal login authentication
-            if (txtUsername.Text == "admin" && txtPassword.Text == "12345")
+            User existingUser = await repository.GetUser(usernameLbl.Text);
+
+           // firebase login
+            if (await repository.Login(usernameLbl.Text, passwordLbl.Text))
             {
-                failedLogin = 0;
-                loggedIn = true;
-                Navigation.PushAsync(new NearbyUsersPage());
+                App.CurrentUser = existingUser.Username;
+                Console.WriteLine("User logged in: " + App.CurrentUser);
+                await Navigation.PushAsync(new NearbyUsersPage());
             }
-            else 
+
+            // non-firebase login for testing purposes
+            else if (usernameLbl.Text == "admin" && passwordLbl.Text == "12345")
             {
-                ErrorLbl.Text = "Your username or password is incorrect";
-                failedLogin++;
+                await Navigation.PushAsync(new NearbyUsersPage());
+            }
+            // empty login field
+            else if (usernameLbl.Text == null || passwordLbl.Text == null)
+            {
+                ErrorLbl.Text = "*Your username or password is missing*";
+            }
+            else
+            {
+                ErrorLbl.Text = "*Your username or password is incorrect*";
             }
         }
 

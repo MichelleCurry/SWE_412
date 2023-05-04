@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /Salon/Salon.Android/.editorconfig
+/Salon/Salon/Services/LocationTracking.cs
+/Salon/Salon/Services/LocationTracking.cs
+/Salon/Salon/Model/Location.cs
+/Salon/Salon/Model/Location.cs

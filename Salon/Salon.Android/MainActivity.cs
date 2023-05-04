@@ -5,6 +5,7 @@ using Android.Content.PM;
 using Android.Runtime;
 using Android.OS;
 using Android.Content;
+using Firebase;
 
 namespace Salon.Droid
 {
@@ -17,6 +18,7 @@ namespace Salon.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            FirebaseApp.InitializeApp(Application.Context);
 
             LoadApplication(new App());
         }

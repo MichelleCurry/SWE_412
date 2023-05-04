@@ -1,22 +1,14 @@
-﻿using Salon.Model;
-using Salon.Services;
+﻿using Salon.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Salon
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RegistrationPage : ContentPage
 	{
         readonly UserRepository repository = new UserRepository();
-
-        public string WebAPIkey = "AIzaSyBG9G6i1YH_LF0rTfvIYUUfSnJ6fhQlbTs";
 
         public RegistrationPage ()
 		{
@@ -24,31 +16,35 @@ namespace Salon
 		}
 
         // Adds newly registered users to the database
-        public async void OnRegisterClicked(object sender, EventArgs e)
+        private async void OnRegisterClicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtUsername.Text) 
-                || string.IsNullOrEmpty(txtPassword.Text) 
-                || string.IsNullOrEmpty(txtEmail.Text))
+            if (string.IsNullOrEmpty(rUsernameLbl.Text)
+                || string.IsNullOrEmpty(rPasswordLbl.Text)
+                || string.IsNullOrEmpty(rEmailLbl.Text))
             {
-                RegErrorLbl.Text = "all fields must be filled";
-            } else
+                regErrorLbl.Text = "all fields must be filled";
+            }
+            else
             {
-                User user = new User
+                Model.User user = new Model.User
                 {
-                    Username = txtUsername.Text,
-                    Password = txtPassword.Text,
-                    Email = txtEmail.Text
+                    Username = rUsernameLbl.Text,
+                    Password = rPasswordLbl.Text,
+                    Email = rEmailLbl.Text,
+                    UserLocation = null
                 };
 
-                var isSaved = await repository.Save(user);
+                regErrorLbl.Text = "user made";
+
+                var isSaved = await repository.RegisterUser(user);
                 if (isSaved)
                 {
-                    RegErrorLbl.Text = ":))))) User has been saved";
-                    await Navigation.PushAsync(new NearbyUsersPage());
+                    regErrorLbl.Text = ":))))) User has been saved";
                 }
                 else
                 {
-                    RegErrorLbl.Text = "****** User could not be saved";
+                    //await Task.Delay(2500);
+                    regErrorLbl.Text = "****** User could not be saved";
                 }
             }
 
