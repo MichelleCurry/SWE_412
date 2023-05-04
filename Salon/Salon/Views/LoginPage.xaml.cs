@@ -25,10 +25,12 @@ namespace Salon
         //handles correct and incorrect logins
         private async void OnLoginClicked(object sender, EventArgs e)
         {
-            User existingUser = await repository.Login(usernameLbl.Text, passwordLbl.Text);
+            User existingUser = await repository.GetUser(usernameLbl.Text, passwordLbl.Text);
 
             if (existingUser != null)
             {
+                //App.CurrentUser = existingUser;
+                Console.WriteLine("User logged in: " + existingUser.Username);
                 await Navigation.PushAsync(new NearbyUsersPage());
             }
 
@@ -37,10 +39,14 @@ namespace Salon
             {
                 await Navigation.PushAsync(new NearbyUsersPage());
             }
+            // empty login field
+            else if (usernameLbl.Text == null || passwordLbl.Text == null)
+            {
+                ErrorLbl.Text = "*Your username or password is missing*";
+            }
             else
             {
-                ErrorLbl.Text = (existingUser != null) + " Your username or password is incorrect";
-                ErrorLbl.IsVisible = true;
+                ErrorLbl.Text = "*Your username or password is incorrect*";
             }
         }
 

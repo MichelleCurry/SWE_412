@@ -2,43 +2,51 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Salon.LoginPage"
-             NavigationPage.HasNavigationBar="false">
-             
+             NavigationPage.HasNavigationBar="false"
+             BackgroundColor="#FFF490">
+
     <ContentPage.Content>
-        <StackLayout Padding="40" Spacing="20"
-                VerticalOptions="Center" 
-                HorizontalOptions="FillAndExpand" >
+        
+        <!-- layout for image and frame surrounding entry fields-->
+        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-            <Image Source="lexapro.png" 
-                   WidthRequest="180"></Image>
+            <Image Grid.Row ="0" Source="lexapro.png" WidthRequest="180" Margin = "0, 80, 0, 40"></Image>
+            <Frame Grid.Row="1" Margin="20,40" BorderColor="#FFF490" BackgroundColor ="#FFFDD0" HasShadow="True"  CornerRadius="30" >
 
-            <Label x:Name="ErrorLbl" TextColor="Red" FontAttributes="Bold"></Label>
+                <!-- layout for entries, buttons, and text-->
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowSpacing="20" Padding="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    
+                    <Label Grid.Row="0" Text="Login" FontSize="28" TextColor="#3d4242" HorizontalOptions="CenterAndExpand"></Label>
+                    <Label Grid.Row="1" x:Name="ErrorLbl" Text="" TextColor="#3d4242" FontAttributes="Italic"></Label>
+                    <Entry Grid.Row="2" x:Name="usernameLbl" Placeholder="Username"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Entry>
+                    <Entry Grid.Row="3" x:Name="passwordLbl" Placeholder="Password" IsPassword="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Entry>
+                    <Button Grid.Row="4" Text="Login" BackgroundColor="#e7e7da" CornerRadius="20" Clicked = "OnLoginClicked"></Button>
+                    <Label Grid.Row="5" HorizontalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Register" FontAttributes="Bold"/>
+                            </FormattedString>
+                        </Label.FormattedText>
 
-            <Entry x:Name="usernameLbl" Placeholder="Username"/>
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                        </Label.GestureRecognizers>
+                    </Label>
 
-            <Entry x:Name="passwordLbl" IsPassword="True" Placeholder="Password"/>
-
-            <Button Text="Login" CornerRadius="60"
-                    FontSize="20"
-                    HorizontalOptions="CenterAndExpand"
-                    BackgroundColor="Transparent"
-                    BorderColor="DarkGray"
-                    BorderWidth="1.2"
-                    WidthRequest="150"
-                    Clicked="OnLoginClicked"/>
-
-            <Label HorizontalOptions="Center">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Register" FontAttributes="Bold"/>
-                    </FormattedString>
-                </Label.FormattedText>
-
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
-                </Label.GestureRecognizers>
-            </Label>
-
-        </StackLayout>
+                </Grid>
+            </Frame>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
