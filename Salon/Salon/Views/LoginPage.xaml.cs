@@ -25,12 +25,13 @@ namespace Salon
         //handles correct and incorrect logins
         private async void OnLoginClicked(object sender, EventArgs e)
         {
-            User existingUser = await repository.GetUser(usernameLbl.Text, passwordLbl.Text);
+            //User existingUser = await repository.GetUser(usernameLbl.Text, passwordLbl.Text);
 
-            if (existingUser != null)
+           // firebase login
+            if (await repository.Login(usernameLbl.Text, passwordLbl.Text))
             {
-                //App.CurrentUser = existingUser;
-                Console.WriteLine("User logged in: " + existingUser.Username);
+               // App.CurrentUser = existingUser.Username;
+                Console.WriteLine("User logged in: " + App.CurrentUser);
                 await Navigation.PushAsync(new NearbyUsersPage());
             }
 
