@@ -6,6 +6,8 @@ namespace Salon
 {
     public partial class App : Application
     {
+        public static String CurrentUser { get; set; }
+
         public App()
         {
             InitializeComponent();
@@ -21,10 +23,12 @@ namespace Salon
 
         protected override void OnSleep()
         {
+
         }
 
         protected override void OnResume()
         {
+
         }
     }
 }

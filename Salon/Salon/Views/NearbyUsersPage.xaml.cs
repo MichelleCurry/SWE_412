@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Salon.Model;
+using Salon.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -14,45 +16,73 @@ namespace Salon
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NearbyUsersPage : ContentPage
     {
-        CancellationTokenSource cts;
         public NearbyUsersPage()
         {
             InitializeComponent();
         }
 
-        protected override async void OnAppearing()
+        private bool locationTimerEnabled = true;
+
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-            while (true)
-            { 
-                await UpdateLocation();
-            }
+            StartLocationUpdates();
         }
 
-        private async Task UpdateLocation()
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            StopLocationUpdates();
+        }
+        private void StopLocationUpdates()
+        {
+            locationTimerEnabled = false;
+        }
+
+        // uses timer to get current location every few seconds
+        private void StartLocationUpdates()
+        {
+            locationTimerEnabled = true;
+            Device.StartTimer(TimeSpan.FromSeconds(3), () =>
+            {
+                UpdateLocation();
+                return locationTimerEnabled;
+            });
+        }
+
+        // updates location label with current user location
+        private async void UpdateLocation()
         {
             try
             {
+                //get location
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
-                cts = new CancellationTokenSource();
-                var location = await Geolocation.GetLocationAsync(request, cts.Token);
-
-                if (location != null)
-                {
-                    LocationLbl.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}"; 
-                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}\n");
-                }
+                var location = await Geolocation.GetLocationAsync(request);
 
                 if (location == null)
                 {
-                    LocationLbl.Text = "No GPS";
+                    LocationLbl.Text = "Location not found";
                 }
-                else 
+                else
                 {
-                    LocationLbl.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}";
-                    //Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}");
+                    LocationLbl.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
+                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}\n");
+
+                    // get current user and update location
+                    var userRepo = new UserRepository();
+                    var currentUser = await userRepo.GetUser(App.CurrentUser);
+
+                    if (App.CurrentUser != null)
+                    {
+                        currentUser.UserLocation = location;
+                        await userRepo.UpdateUser(currentUser);
+                    }
+                    else
+                    {
+                        LocationLbl.Text = "Current user is null";
+                    }
+
                 }
-                await Task.Delay(5000);
 
             }
             catch (FeatureNotSupportedException fnsEx)
@@ -71,7 +101,7 @@ namespace Salon
             {
                 LocationLbl.Text = ("location not found:\n" + ex.Message);
             }
-            
+
         }
     }
 }

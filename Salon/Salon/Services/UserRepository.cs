@@ -31,12 +31,10 @@ namespace Salon.Services
                     .EqualTo(user.Email)
                     .OnceAsync<Model.User>();
 
-                if (existingUser.Count > 0)
+                if (existingUser.Any())
                 {
                     return false;
                 }
-
-                users = firebase.Child("users");
 
                 // Check if username already exists
                 var existingUsername = await users
@@ -44,25 +42,28 @@ namespace Salon.Services
                     .EqualTo(user.Username)
                     .OnceAsync<Model.User>();
 
-                if (existingUsername.Count > 0)
+                if (existingUsername.Any())
                 {
                     return false;
                 }
                 else
                 {
-                    await users.PostAsync(user);
+                    await firebase
+                        .Child("users")
+                        .Child(user.Username)
+                        .PutAsync(user);
+                    //await users.PostAsync(user);
                     return true;
                 }
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error registering user: {ex.Message}");
+                Console.WriteLine($"Error registering user: {ex.Message}");
                 return false;
             }
         }
 
-
-        public async Task<Model.User> Login(string lUsername, string lPassword)
+        public async Task<bool> Login(string lUsername, string lPassword)
         {
             try
             {
@@ -77,14 +78,36 @@ namespace Salon.Services
 
                 if (user == null)
                 {
-                    return null;
+                    return false;
                 }
 
                 // Verify the password
                 if (user.Password != lPassword)
                 {
-                    return null;
+                    return false;
                 }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error logging in: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<Model.User> GetUser(string lUsername)
+        {
+            try
+            {
+                // Retrieve the user with the specified username
+                var user = (await firebase
+                    .Child("users")
+                    .OrderBy("Username")
+                    .EqualTo(lUsername)
+                    .OnceAsync<Model.User>())
+                    .FirstOrDefault()
+                    .Object;
 
                 return user;
             }
@@ -95,5 +118,20 @@ namespace Salon.Services
             }
         }
 
+        // updates user data
+        public async Task<bool> UpdateUser(Model.User user)
+        {
+            try
+            {
+                await firebase.Child("users").Child(App.CurrentUser).PutAsync(user);
+                Console.WriteLine($"UPDATED!!!!");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating user: {ex.Message}");
+                return false;
+            }
+        }
     }
 }

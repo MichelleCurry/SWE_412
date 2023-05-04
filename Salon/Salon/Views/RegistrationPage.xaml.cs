@@ -1,18 +1,11 @@
-﻿using Salon.Model;
-using Salon.Services;
+﻿using Salon.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace Salon
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
+    [XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class RegistrationPage : ContentPage
 	{
         readonly UserRepository repository = new UserRepository();
@@ -37,12 +30,11 @@ namespace Salon
                 {
                     Username = rUsernameLbl.Text,
                     Password = rPasswordLbl.Text,
-                    Email = rEmailLbl.Text
-
+                    Email = rEmailLbl.Text,
+                    UserLocation = null
                 };
 
                 regErrorLbl.Text = "user made";
-                //await Task.Delay(1500);
 
                 var isSaved = await repository.RegisterUser(user);
                 if (isSaved)
