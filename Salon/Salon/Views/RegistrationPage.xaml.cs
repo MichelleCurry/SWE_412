@@ -1,6 +1,5 @@
 ﻿using Salon.Services;
 using System;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -36,7 +35,6 @@ namespace Salon
                 };
 
                 regErrorLbl.Text = "user made";
-                //await Task.Delay(1500);
 
                 var isSaved = await repository.RegisterUser(user);
                 if (isSaved)
