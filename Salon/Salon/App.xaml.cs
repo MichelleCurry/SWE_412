@@ -6,6 +6,8 @@ namespace Salon
 {
     public partial class App : Application
     {
+        public static String CurrentUser { get; set; }
+
         public App()
         {
             InitializeComponent();
