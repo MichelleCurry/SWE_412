@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿ ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Salon.RegistrationPage"
@@ -16,21 +16,24 @@
             <Label x:Name="Salon" TextColor="#3d4242" FontAttributes="Bold"></Label>
             <Frame Grid.Row="1" Margin="20,100" BorderColor="#FFF490" BackgroundColor ="#FFFDD0" HasShadow="True"  CornerRadius="30">
 
-            <Label Text="Password" x:Name="RegPassword"  FontAttributes="Bold"></Label>
-            <Entry x:Name="rPasswordLbl" IsPassword="True" Placeholder="Password"/>
-
-            <Label Text="Email" x:Name="RegEmail"  FontAttributes="Bold"></Label>
-            <Entry x:Name="rEmailLbl" IsPassword="True" Placeholder="Email"/>
-
-            <Button Text="Register" CornerRadius="60"
-                    FontSize="20"
-                    HorizontalOptions="CenterAndExpand"
-                    BackgroundColor="Transparent"
-                    BorderColor="DarkGray"
-                    BorderWidth="1.2"
-                    WidthRequest="150"
-                    Clicked="OnRegisterClicked"/>
-
-        </StackLayout>
+                <!-- layout for entries, buttons, and text-->
+                <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" RowSpacing="20" Padding="20">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Text="Registration" FontSize="28" TextColor="#3d4242" HorizontalOptions="CenterAndExpand"></Label>
+                    <Label Grid.Row="1" x:Name="regErrorLbl" Text="" TextColor="#3d4242" FontAttributes="Italic"></Label>
+                    <Entry Grid.Row="2" x:Name="rEmailLbl" Placeholder="Username"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Entry>
+                    <Entry Grid.Row="3" x:Name="rUsernameLbl" Placeholder="Username"  HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Entry>
+                    <Entry Grid.Row="4" x:Name="rPasswordLbl" Placeholder="Password" IsPassword="True" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Entry>
+                    <Button Grid.Row="5"  Text="Register" BackgroundColor="#e5e5dc" TextColor="#3d4242" Clicked="OnRegisterClicked" CornerRadius="60"></Button>
+                </Grid>
+            </Frame>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
