@@ -16,6 +16,7 @@ namespace Salon
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NearbyUsersPage : ContentPage
     {
+        UserRepository repository = new UserRepository();
         public NearbyUsersPage()
         {
             InitializeComponent();
@@ -23,9 +24,11 @@ namespace Salon
 
         private bool locationTimerEnabled = true;
 
-        protected override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
+            var nearbyUsers = await repository.GetAllUsers();
+            UsersListView.ItemsSource = nearbyUsers;
             StartLocationUpdates();
         }
 
@@ -50,7 +53,21 @@ namespace Salon
             });
         }
 
-        // updates location label with current user location
+        private async void GetNearbyUsers()
+        {
+            var userRepo = new UserRepository();
+            var nearbyUsers = await userRepo.GetUser(App.CurrentUser);
+            if (nearbyUsers != null)
+            {
+                UsersListView.ItemsSource = new List<User> { nearbyUsers };
+            }
+            else
+            {
+                UsersListView.ItemsSource = new List<User>();
+            }
+        }
+
+        // updates saved location with current user location
         private async void UpdateLocation()
         {
             try
@@ -59,28 +76,23 @@ namespace Salon
                 var request = new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10));
                 var location = await Geolocation.GetLocationAsync(request);
 
-                if (location == null)
+                if (location != null)
                 {
-                    LocationLbl.Text = "Location not found";
-                }
-                else
-                {
-                    LocationLbl.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
+                    //LocationLbl.Text = $"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}";
                     Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}\n");
 
                     // get current user and update location
-                    var userRepo = new UserRepository();
-                    var currentUser = await userRepo.GetUser(App.CurrentUser);
+                    var currentUser = await repository.GetUser(App.CurrentUser);
 
                     if (App.CurrentUser != null)
                     {
                         currentUser.UserLocation = location;
-                        await userRepo.UpdateUser(currentUser);
+                        await repository.UpdateUser(currentUser);
                     }
-                    else
+                    /*else
                     {
                         LocationLbl.Text = "Current user is null";
-                    }
+                    }*/
 
                 }
 

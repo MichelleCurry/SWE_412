@@ -23,5 +23,10 @@ namespace Salon.Model
         //probably shouldn't have the password stored locally
 
         public Location UserLocation { get; set; }
+
+        public override string ToString()
+        {
+            return "User: " + Username;
+        }
     }
 }

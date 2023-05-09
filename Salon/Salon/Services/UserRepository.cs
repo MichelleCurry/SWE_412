@@ -1,10 +1,12 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
+using Salon.Model;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-
 
 namespace Salon.Services
 {
@@ -75,15 +77,19 @@ namespace Salon.Services
                     .OnceAsync<Model.User>())
                     .FirstOrDefault()
                     .Object;
+                Console.WriteLine($"retrieved user");
 
                 if (user == null)
                 {
+                    Console.WriteLine($"Error could not find user");
                     return false;
                 }
 
                 // Verify the password
                 if (user.Password != lPassword)
                 {
+                    Console.WriteLine($"Error not the correct password");
+
                     return false;
                 }
 
@@ -131,6 +137,33 @@ namespace Salon.Services
             {
                 Console.WriteLine($"Error updating user: {ex.Message}");
                 return false;
+            }
+        }
+
+        public async Task<List<Model.User>> GetAllUsers()
+        {
+            List<Model.User> users = new List<Model.User>();
+
+            try
+            {
+                // Retrieve all users with the specified username
+                var user = (await firebase
+                    .Child("users")
+                    .OrderBy("Username")
+                    .OnceAsync<Model.User>())
+                    .FirstOrDefault()
+                    .Object;
+
+                return (await firebase.Child(nameof(users)).OnceAsync<User>()).Select(item => new User
+                {
+                    Username = item.Object.Username,
+                    UserLocation = item.Object.UserLocation
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error getting users: {ex.Message}");
+                return null;
             }
         }
     }
