@@ -39,7 +39,7 @@
                     </StackLayout>
                 </StackLayout>
                 <StackLayout HorizontalOptions="Center">
-                    <Button x:Name="multi_reset" BackgroundColor="Red" WidthRequest="100" HeightRequest="60" Clicked="Multi_Reset_Clicked" Text="Reset"/>
+                    <Button x:Name="multi_reset" BackgroundColor ="#FFFDD0" WidthRequest="100" HeightRequest="60" Clicked="Multi_Reset_Clicked" Text="Reset"/>
                 </StackLayout>
             </StackLayout>
         </StackLayout>

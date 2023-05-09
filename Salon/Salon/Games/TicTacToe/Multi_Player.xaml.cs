@@ -177,9 +177,9 @@ namespace Salon
             }
         }
 
-        public async void Multi_Reset_Clicked(object sender, EventArgs args)
+        public void Multi_Reset_Clicked(object sender, EventArgs args)
         {
-            await Navigation.PushAsync(new NearbyUsersPage());
+            App.Current.MainPage = new NearbyUsersPage();
         }
 
 
