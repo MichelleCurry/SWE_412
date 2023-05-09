@@ -23,15 +23,17 @@ namespace Salon
         }
 
         private bool locationTimerEnabled = true;
+        // 111 meters
+        private Double MAX_RANGE = 0.01;
+        //int i = 1;
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
             var nearbyUsers = await repository.GetAllUsers();
             UsersListView.ItemsSource = nearbyUsers;
-            StartLocationUpdates();
+            await StartLocationUpdates();
         }
-
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
@@ -43,29 +45,83 @@ namespace Salon
         }
 
         // uses timer to get current location every few seconds
-        private void StartLocationUpdates()
+        private async Task StartLocationUpdates()
         {
             locationTimerEnabled = true;
-            Device.StartTimer(TimeSpan.FromSeconds(3), () =>
+            while (locationTimerEnabled)
             {
+                await Task.Delay(TimeSpan.FromSeconds(3));
+                await GetNearbyUsers();
                 UpdateLocation();
-                return locationTimerEnabled;
-            });
+            }
+        }
+        private void OnGamesClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new StartScreen();
+        }
+        private void OnMessageClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new LoginPage();
         }
 
-        private async void GetNearbyUsers()
+        public async Task<List<User>> GetNearbyUsers()
         {
-            var userRepo = new UserRepository();
-            var nearbyUsers = await userRepo.GetUser(App.CurrentUser);
-            if (nearbyUsers != null)
+            try
             {
-                UsersListView.ItemsSource = new List<User> { nearbyUsers };
+                var myLocation = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+                var allUsers = await repository.GetAllUsers();
+                var nearbyUsers = allUsers.Where(u => u.UserLocation.CalculateDistance(myLocation, DistanceUnits.Kilometers) <= MAX_RANGE).ToList();
+
+                return nearbyUsers;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting nearby users: {ex.Message}");
+                return null;
+            }
+        }
+
+        /*private async void GetNearbyUsers()
+        {
+            Double LatDiff;
+            Double LongDiff;
+            var userRepo = new UserRepository();
+            var currentUser = await userRepo.GetUser(App.CurrentUser);
+            if (currentUser != null)
+            {
+                LocationLbl.Text = ""+i;
+
+                var currentLat = currentUser.UserLocation.Latitude;
+                var currentLong = currentUser.UserLocation.Longitude;
+
+                var usersList = new List<User>();
+
+                if (UsersListView.ItemsSource != null)
+                {
+                    usersList = ((List<User>)UsersListView.ItemsSource).ToList();
+                }
+
+                //remove users from list that are not within range
+                foreach (User person in UsersListView.ItemsSource)
+                {
+                    LatDiff = person.UserLocation.Latitude - currentLat;
+                    LongDiff = person.UserLocation.Longitude - currentLong;
+
+                    usersList.Remove(currentUser);
+                    if (Math.Abs(LatDiff) > MAX_RANGE
+                        && Math.Abs(LongDiff) > MAX_RANGE)
+                    {
+                        usersList.Remove(person);
+                    }
+                }
+                UsersListView.ItemsSource = usersList;
             }
             else
             {
-                UsersListView.ItemsSource = new List<User>();
+                LocationLbl.Text = "Must be logged in!!!";
             }
-        }
+            i++;
+        }*/
 
         // updates saved location with current user location
         private async void UpdateLocation()

@@ -14,7 +14,7 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Image Grid.Row ="0" Source="lexapro.png" WidthRequest="180" Margin = "0, 80, 0, 40"></Image>
+            <Image Grid.Row ="0" Source="Salon_Logo.png" WidthRequest="250" Margin = "0, 80, 0, 0"></Image>
             <Frame Grid.Row="1" Margin="20,40" BorderColor="#FFF490" BackgroundColor ="#FFFDD0" HasShadow="True"  CornerRadius="30" >
 
                 <!-- layout for entries, buttons, and text-->

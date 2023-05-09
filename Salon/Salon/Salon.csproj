@@ -11,6 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="g\**" />
+    <EmbeddedResource Remove="g\**" />
+    <None Remove="g\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Model\Location.cs" />
     <Compile Remove="Services\ILocationReceiver.cs" />
   </ItemGroup>
@@ -35,5 +41,18 @@
     <EmbeddedResource Update="Views\RegistrationPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Games\TicTacToe\Multi_Player.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Games\TicTacToe\single_player.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Games\TicTacToe\StartScreen.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Games\TicTacToe\Debug_netstandard2.0\" />
   </ItemGroup>
 </Project>
