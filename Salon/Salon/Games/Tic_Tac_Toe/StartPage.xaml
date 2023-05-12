@@ -12,6 +12,7 @@
                              HeightRequest="30"
                              WidthRequest="30"
                              HorizontalOptions="Start"
+                             Clicked="Back_Clicked"
                              BackgroundColor="Transparent"/>
 
             <StackLayout Margin="0,30" Spacing="40">

@@ -145,7 +145,6 @@ namespace Salon.Games.Tic_Tac_Toe
             btn.IsEnabled = false;
         }
 
-        //EDITED
         public void Back_Clicked(object sender, EventArgs args)
         {
             App.Current.MainPage = new StartPage();
