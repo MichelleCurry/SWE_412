@@ -24,14 +24,14 @@ namespace Salon
 
         private bool locationTimerEnabled = true;
 
+        // 111 meters, 0.111 km
+        private Double MAX_RANGE = 0.111;
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            var nearbyUsers = await repository.GetAllUsers();
-            UsersListView.ItemsSource = nearbyUsers;
-            StartLocationUpdates();
+            await StartLocationUpdates();
         }
-
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
@@ -43,27 +43,43 @@ namespace Salon
         }
 
         // uses timer to get current location every few seconds
-        private void StartLocationUpdates()
+        private async Task StartLocationUpdates()
         {
             locationTimerEnabled = true;
-            Device.StartTimer(TimeSpan.FromSeconds(3), () =>
+            while (locationTimerEnabled)
             {
+                await Task.Delay(TimeSpan.FromSeconds(3));
+                UsersListView.ItemsSource = await GetNearbyUsers();
                 UpdateLocation();
-                return locationTimerEnabled;
-            });
-        }
-
-        private async void GetNearbyUsers()
-        {
-            var userRepo = new UserRepository();
-            var nearbyUsers = await userRepo.GetUser(App.CurrentUser);
-            if (nearbyUsers != null)
-            {
-                UsersListView.ItemsSource = new List<User> { nearbyUsers };
             }
-            else
+        }
+        public async Task<List<User>> GetNearbyUsers()
+        {
+            try
             {
-                UsersListView.ItemsSource = new List<User>();
+                var myLocation = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
+                var nearbyUsers = await repository.GetAllUsers();
+                var usersWithinRange = new List<User>();
+                foreach (var user in nearbyUsers)
+                {
+                    if (Location.CalculateDistance(myLocation, user.UserLocation, DistanceUnits.Kilometers) <= MAX_RANGE)
+                    {
+                        Console.WriteLine($"-------User: {user.Username} is {Location.CalculateDistance(myLocation, user.UserLocation, DistanceUnits.Kilometers)} km away");
+                        usersWithinRange.Add(user);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"*****User: {user.Username} is too far away");
+                    }
+                }
+
+                Console.WriteLine("+++++++There are " + usersWithinRange.Count + "People nearby");
+                return usersWithinRange;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting nearby users: {ex.Message}");
+                return null;
             }
         }
 
@@ -114,6 +130,14 @@ namespace Salon
                 LocationLbl.Text = ("location not found:\n" + ex.Message);
             }
 
+        }
+        private void OnGamesClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new Games.Tic_Tac_Toe.StartPage();
+        }
+        private void OnMessageClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new LoginPage();
         }
     }
 }
