@@ -5,74 +5,85 @@
              BackgroundColor="#FFF490">
 
     <ContentPage.Content Padding="100">
-        <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+        <StackLayout>
+            <ImageButton x:Name="back"
+                             Scale="5"
+                             HorizontalOptions="Start"
+                             Source="back_icon.png"
+                             HeightRequest="10"
+                             WidthRequest="10"
+                             Margin="40, 20"
+                             Clicked="Back_Clicked"
+                             BackgroundColor="Transparent"
+                            />
+            <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <Image Grid.Row ="0" 
+                <Image Grid.Row ="0" 
                    Source="Salon_Logo.png" 
                    WidthRequest="180" 
                    Margin = "0, 30, 0, 0"/>
 
-            <Label Grid.Row="1"
+                <Label Grid.Row="1"
                    Text="Who's Nearby"
                    FontSize="30"
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="CenterAndExpand"
                    TextColor="#3d4242" />
 
-            <Label Grid.Row="2"
+                <Label Grid.Row="2"
                    x:Name="LocationLbl"
                    Text=""
                    FontSize="Large"
                    VerticalOptions="CenterAndExpand"
                    HorizontalOptions="CenterAndExpand" />
 
-            <CollectionView Grid.Row="2"
+                <CollectionView Grid.Row="2"
                             x:Name="UsersListView"
                             ItemsSource="{Binding nearbyUsers}"
                             Margin="20,30">
 
-                <CollectionView.ItemsLayout>
-                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
-                </CollectionView.ItemsLayout>
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
 
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame BorderColor="#FFF490"
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BorderColor="#FFF490"
                                BackgroundColor="#FFFDD0"
                                HasShadow="True"
                                CornerRadius="30"
                                Padding="10">
-                            <Grid HorizontalOptions="FillAndExpand"
+                                <Grid HorizontalOptions="FillAndExpand"
                                   VerticalOptions="FillAndExpand"
                                   Padding="-10, 10, 0, 0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
 
-                                <Image Grid.Column="0"
+                                    <Image Grid.Column="0"
                                        Grid.Row="0"
                                        Source="Default_pfp.png"
                                        WidthRequest="50"
                                        Margin="20,0,0,0"/>
 
-                                <Label Grid.Column="1"
+                                    <Label Grid.Column="1"
                                        Grid.Row="0"
                                        Padding="-20, 0, 0, 0"
                                        Text="{Binding Username}"
                                        FontSize="Large"
                                        LineBreakMode="NoWrap" />
 
-                                <Button Grid.Column="0"
+                                    <Button Grid.Column="0"
                                         Grid.Row="1"
                                         Text="Message"
                                         FontSize="Small"
@@ -80,18 +91,19 @@
                                         BackgroundColor="Transparent" 
                                         Clicked="OnMessageClicked"/>
 
-                                <Button Grid.Column="1"
+                                    <Button Grid.Column="1"
                                         Grid.Row="1"
                                         Text="Games"
                                         FontSize="Small"
                                         Padding="0, 0, 0, 0"
                                         BackgroundColor="Transparent" 
                                         Clicked="OnGamesClicked"/>
-                            </Grid>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </Grid>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

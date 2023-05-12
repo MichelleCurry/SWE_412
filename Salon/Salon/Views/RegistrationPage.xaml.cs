@@ -49,5 +49,10 @@ namespace Salon
             }
 
         }
+        public void Back_Clicked(object sender, EventArgs args)
+        {
+            App.Current.MainPage = new LoginPage();
+            //await Navigation.PushAsync(new NearbyUsersPage());
+        }
     }
 }

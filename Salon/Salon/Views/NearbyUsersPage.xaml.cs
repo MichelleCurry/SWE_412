@@ -62,6 +62,7 @@ namespace Salon
                 var usersWithinRange = new List<User>();
                 foreach (var user in nearbyUsers)
                 {
+                    Console.WriteLine($"-------User: {user.Username} is {Location.CalculateDistance(myLocation, user.UserLocation, DistanceUnits.Kilometers)} km away");
                     if (Location.CalculateDistance(myLocation, user.UserLocation, DistanceUnits.Kilometers) <= MAX_RANGE)
                     {
                         Console.WriteLine($"-------User: {user.Username} is {Location.CalculateDistance(myLocation, user.UserLocation, DistanceUnits.Kilometers)} km away");
@@ -130,6 +131,11 @@ namespace Salon
                 LocationLbl.Text = ("location not found:\n" + ex.Message);
             }
 
+        }
+        public void Back_Clicked(object sender, EventArgs args)
+        {
+            App.Current.MainPage = new LoginPage();
+            //await Navigation.PushAsync(new NearbyUsersPage());
         }
         private void OnGamesClicked(object sender, EventArgs e)
         {
