@@ -81,13 +81,13 @@ namespace Salon
             {
                 App.CurrentUser = existingUser.Username;
                 Console.WriteLine("User logged in: " + App.CurrentUser);
-                await Navigation.PushAsync(new NearbyUsersPage());
+                App.Current.MainPage = new NearbyUsersPage();
             }
 
             // non-firebase login for testing purposes
             else if (usernameLbl.Text == "admin" && passwordLbl.Text == "12345")
             {
-                await Navigation.PushAsync(new NearbyUsersPage());
+                App.Current.MainPage = new NearbyUsersPage();
             }
             // empty login field
             else if (usernameLbl.Text == null || passwordLbl.Text == null)
