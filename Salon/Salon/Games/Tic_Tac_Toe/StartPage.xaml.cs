@@ -46,7 +46,7 @@ namespace Salon.Games.Tic_Tac_Toe
         }
         public void Back_Clicked(object sender, EventArgs args)
         {
-            App.Current.MainPage = new StartPage();
+            App.Current.MainPage = new NearbyUsersPage();
         }
     }
 }
