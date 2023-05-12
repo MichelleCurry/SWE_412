@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Salon.Games.Tic_Tac_Toe.GameBoard"
+             BackgroundColor ="#FFF490">
+
+    <ContentPage.Content>
+        <StackLayout  x:Name="Single_Player_Page">
+            <ImageButton x:Name="back_single"
+                             Margin="20,10"
+                             Source="back_icon.png"
+                             HeightRequest="30"
+                             WidthRequest="30"
+                             HorizontalOptions="Start"
+                             Clicked="Back_Clicked"
+                             BackgroundColor="Transparent"/>
+            <StackLayout HorizontalOptions="Center" Padding="0,50">
+                <Label Text="Opponent Name" FontSize="35"/>
+                <Label Grid.Column ="1" Grid.Row ="0" HorizontalOptions="Center" x:Name="CurrentPlayer" Text="Player Turn" FontSize="30"/>
+            </StackLayout>
+
+            <Grid VerticalOptions="Start"
+                    Margin="40,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="100" />
+                    <RowDefinition Height="60" />
+                </Grid.RowDefinitions>
+
+                <Button Grid.Column ="0" Grid.Row ="0" x:Name="box1" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+                <Button Grid.Column ="1" Grid.Row ="0" x:Name="box2" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+                <Button Grid.Column ="2" Grid.Row ="0" x:Name="box3" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+                <Button Grid.Column ="0" Grid.Row ="1" x:Name="box4" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+                <Button Grid.Column ="1" Grid.Row ="1" x:Name="box5" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+                <Button Grid.Column ="2" Grid.Row ="1" x:Name="box6" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+                <Button Grid.Column ="0" Grid.Row ="2" x:Name="box7" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+                <Button Grid.Column ="1" Grid.Row ="2" x:Name="box8" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+                <Button Grid.Column ="2" Grid.Row ="2" x:Name="box9" BackgroundColor="#FFFDD0" Clicked="Position_Clicked"/>
+
+                <Button Grid.Column ="1" Grid.Row ="3" x:Name="Resetbtn" BackgroundColor="#e5e5dc" Text="Reset" Clicked="Reset_Clicked"/>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
