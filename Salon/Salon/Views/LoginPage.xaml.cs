@@ -56,7 +56,7 @@ namespace Salon
             if (loggedIn)
             {
                 //setLoggedInTimer();
-                Navigation.PushAsync(new NearbyUsersPage());
+                App.Current.MainPage = new NearbyUsersPage();
             }
         }
 
@@ -102,7 +102,7 @@ namespace Salon
 
         private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new RegistrationPage());
+            App.Current.MainPage = new RegistrationPage();
         }
 
     }
