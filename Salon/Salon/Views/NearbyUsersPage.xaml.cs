@@ -126,19 +126,19 @@ namespace Salon
             }
             catch (FeatureNotSupportedException fnsEx)
             {
-                LocationLbl.Text = ("GPS not supported: \n" + fnsEx.Message);
+                ErrorLbl.Text = ("GPS not supported: \n" + fnsEx.Message);
             }
             catch (FeatureNotEnabledException fneEx)
             {
-                LocationLbl.Text = ("GPS not enabled: \n" + fneEx.Message);
+                ErrorLbl.Text = ("GPS not enabled: \n" + fneEx.Message);
             }
             catch (PermissionException pEx)
             {
-                LocationLbl.Text = ("Turn on you location permissions for Salon: \n" + pEx.Message);
+                ErrorLbl.Text = ("Turn on you location permissions for Salon: \n" + pEx.Message);
             }
             catch (Exception ex)
             {
-                LocationLbl.Text = ("location not found:\n" + ex.Message);
+                ErrorLbl.Text = ("location not found:\n" + ex.Message);
             }
 
         }

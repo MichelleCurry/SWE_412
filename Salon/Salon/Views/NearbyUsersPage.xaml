@@ -1,21 +1,26 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-    <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Salon.NearbyUsersPage"
              BackgroundColor="#FFF490">
+    <ContentPage.Resources>
+        <Color x:Key="PrimaryColor">#3d4242</Color>
+        <Font x:Key="PrimaryFontFamily">Roboto</Font>
+        <ImageSource x:Key="SalonLogoImageSource">Salon_Logo.png</ImageSource>
+    </ContentPage.Resources>
 
     <ContentPage.Content Padding="100">
         <StackLayout>
             <ImageButton x:Name="back"
-                             Scale="5"
-                             HorizontalOptions="Start"
-                             Source="back_icon.png"
-                             HeightRequest="10"
-                             WidthRequest="10"
-                             Margin="40, 20"
-                             Clicked="Back_Clicked"
-                             BackgroundColor="Transparent"
-                            />
+                Scale="5"
+                HorizontalOptions="Start"
+                Source="back_icon.png"
+                HeightRequest="10"
+                WidthRequest="10"
+                Margin="40, 20"
+                Clicked="Back_Clicked"
+                BackgroundColor="Transparent"/>
+
             <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -24,24 +29,21 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Image Grid.Row ="0" 
-                   Source="Salon_Logo.png" 
-                   WidthRequest="180" 
-                   Margin = "0, 30, 0, 0"/>
-
-                <Label Grid.Row="1"
-                   Text="Who's Nearby"
-                   FontSize="30"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand"
-                   TextColor="#3d4242" />
+                <Image Grid.Row ="0" Source="{StaticResource SalonLogoImageSource}" WidthRequest="180" Margin="0, 30, 0, 0"/>
+                <Label Grid.Row ="1" Text="Who's Nearby" FontSize="30" 
+                       TextColor="{StaticResource PrimaryColor}" 
+                       FontFamily="{StaticResource PrimaryFontFamily}" 
+                       VerticalOptions="CenterAndExpand" 
+                       HorizontalOptions="CenterAndExpand"/>
 
                 <Label Grid.Row="2"
-                   x:Name="LocationLbl"
-                   Text=""
-                   FontSize="Large"
-                   VerticalOptions="CenterAndExpand"
-                   HorizontalOptions="CenterAndExpand" />
+                       x:Name="ErrorLbl"
+                       Text=""
+                       FontSize="Large"
+                       TextColor="{StaticResource PrimaryColor}" 
+                       FontFamily="{StaticResource PrimaryFontFamily}" 
+                       VerticalOptions="CenterAndExpand" 
+                       HorizontalOptions="CenterAndExpand"/>
 
                 <CollectionView Grid.Row="2"
                             x:Name="UsersListView"
@@ -55,7 +57,7 @@
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame BorderColor="#FFF490"
-                               BackgroundColor="#FFFDD0"
+                               BackgroundColor="{Binding PrimaryColor}"
                                HasShadow="True"
                                CornerRadius="30"
                                Padding="10">
