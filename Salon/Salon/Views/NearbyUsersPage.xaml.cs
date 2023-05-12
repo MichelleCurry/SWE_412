@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Salon.Games.Tic_Tac_Toe;
 
 namespace Salon
 {
@@ -32,7 +33,7 @@ namespace Salon
             {
                 while (locationTimerEnabled)
                 {
-                    await Task.Delay(TimeSpan.FromSeconds(5));
+                    await Task.Delay(TimeSpan.FromSeconds(3));
                     var nearbyUsers = await GetNearbyUsers();
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -50,6 +51,18 @@ namespace Salon
         private void StopLocationUpdates()
         {
             locationTimerEnabled = false;
+        }
+
+        // uses timer to get current location every few seconds
+        private async Task StartLocationUpdates()
+        {
+            locationTimerEnabled = true;
+            while (locationTimerEnabled)
+            {
+                await Task.Delay(TimeSpan.FromSeconds(3));
+                UsersListView.ItemsSource = await GetNearbyUsers();
+                UpdateLocation();
+            }
         }
         public async Task<List<User>> GetNearbyUsers()
         {
@@ -149,7 +162,7 @@ namespace Salon
         }
         private void OnGamesClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new Games.Tic_Tac_Toe.StartPage();
+            App.Current.MainPage = new StartPage();
         }
         private void OnMessageClicked(object sender, EventArgs e)
         {
