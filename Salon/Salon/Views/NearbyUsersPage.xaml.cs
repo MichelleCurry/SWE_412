@@ -16,10 +16,11 @@ namespace Salon
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NearbyUsersPage : ContentPage
     {
-        private UserRepository repository = new UserRepository();
+        private UserRepository repository;
         public NearbyUsersPage()
         {
             InitializeComponent();
+            repository = new UserRepository();
         }
 
         private bool locationTimerEnabled = true;
@@ -56,43 +57,44 @@ namespace Salon
             try
             {
                 var myLocation = await Geolocation.GetLastKnownLocationAsync() ?? await Geolocation.GetLocationAsync();
-                var nearbyUsers = new List<User>();
+                var allUsers = new List<User>();
                 try
                 {
-                    nearbyUsers = await repository.GetAllUsers();
+                    allUsers = await repository.GetAllUsers();
                     var usersWithinRange = new List<User>();
-                    foreach (var user in nearbyUsers)
+                    if (allUsers == null) // add null check here
                     {
-                        Console.WriteLine($"-------User: {user.Username} is {Location.CalculateDistance(myLocation, user.UserLocation, DistanceUnits.Kilometers)} km away");
-                        if (Location.CalculateDistance(myLocation, user.UserLocation, DistanceUnits.Kilometers) <= MAX_RANGE)
-                        {
-                            Console.WriteLine($"-------User: {user.Username} is {Location.CalculateDistance(myLocation, user.UserLocation, DistanceUnits.Kilometers)} km away");
-                            usersWithinRange.Add(user);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"*****User: {user.Username} is too far away");
-                        }
+                        return new List<User>();
                     }
-
-                    Console.WriteLine($"+++++++There are {usersWithinRange.Count} people nearby");
+                    for (int i = 0; i < allUsers.Count; i++)
+                    {   
+                        try
+                        {
+                            if (Location.CalculateDistance(myLocation, allUsers[i].UserLocation, DistanceUnits.Kilometers) <= MAX_RANGE)
+                            {
+                                usersWithinRange.Add(allUsers[i]);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Users does not have location details saved");
+                        }                        
+                    }
                     return usersWithinRange;
                 }
-                finally
+                catch (Exception ex)
                 {
-                    if (nearbyUsers != null)
-                    {
-                        nearbyUsers.Clear();
-                    }
+                    Console.WriteLine($"Error getting nearby users: {ex.Message}");
+                    return null;
                 }
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error getting nearby users: {ex.Message}");
+                Console.WriteLine($"Error getting location: {ex.Message}");
                 return null;
             }
         }
-
 
         // updates saved location with current user location
         private async void UpdateLocation()
@@ -116,10 +118,6 @@ namespace Salon
                         currentUser.UserLocation = location;
                         await repository.UpdateUser(currentUser);
                     }
-                    /*else
-                    {
-                        LocationLbl.Text = "Current user is null";
-                    }*/
 
                 }
 
