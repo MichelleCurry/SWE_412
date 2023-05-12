@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Salon.Games.Tic_Tac_Toe.StartPage"
+             BackgroundColor ="#FFF490">
+
+    <StackLayout x:Name="Menu_Page">
+        <StackLayout BackgroundColor="Transparent">
+            <ImageButton x:Name="back_single"
+                             Margin="20,10"
+                             Source="back_icon.png"
+                             HeightRequest="30"
+                             WidthRequest="30"
+                             HorizontalOptions="Start"
+                             BackgroundColor="Transparent"/>
+
+            <StackLayout Margin="0,30" Spacing="40">
+                <Label Text="Tic-Tac-Toe" HorizontalTextAlignment="Center" TextColor="#3d4242" FontSize="35"/>
+                <StackLayout HorizontalOptions="Center"  Spacing="20">
+                    <RadioButton x:Name ="XIcon" Content="X" IsChecked="True" FontSize="30"/>
+                    <RadioButton Content="O" FontSize="30"/>
+                </StackLayout>
+
+                <StackLayout Padding=" 0,30" Spacing="30">
+                    <Button Grid.Column="0" Grid.Row="1" 
+                        x:Name="SinglePlayerBtn"
+                        Text="Single Player"
+                        HorizontalOptions="Center"
+                        BackgroundColor ="#FFFDD0"
+                        FontSize="20"
+                        WidthRequest="250"
+                        HeightRequest="80"
+                        CornerRadius="30"
+                        Clicked="single_player_clicked"/>
+
+                    <Button Grid.Column="1" Grid.Row="1" x:Name="multi_player"
+                        Text="Multi Player"
+                        HorizontalOptions="Center"
+                        BackgroundColor ="#FFFDD0"
+                        FontSize="20"
+                        WidthRequest="250"
+                        HeightRequest="80"
+                        CornerRadius="30"
+                        Clicked="multi_player_clicked"/>
+                </StackLayout>
+
+            </StackLayout>
+
+            <Grid HorizontalOptions="CenterAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions HorizontalOptions="Center">
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="100"/>
+                </Grid.RowDefinitions>
+            </Grid>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>
