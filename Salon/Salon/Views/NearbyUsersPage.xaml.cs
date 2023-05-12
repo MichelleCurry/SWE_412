@@ -139,13 +139,5 @@ namespace Salon
         {
             App.Current.MainPage = new LoginPage();
         }
-        private void OnGamesClicked(object sender, EventArgs e)
-        {
-            App.Current.MainPage = new Games.Tic_Tac_Toe.StartPage();
-        }
-        private void OnMessageClicked(object sender, EventArgs e)
-        {
-            App.Current.MainPage = new LoginPage();
-        }
     }
 }
